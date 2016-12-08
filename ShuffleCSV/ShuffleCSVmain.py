@@ -13,33 +13,34 @@ def parse_args():
     argparser = argparse.ArgumentParser(description="Shuffle the rows of the provided CSV file.")
 
     argparser.add_argument(
-        "csvfile", \
-        action=argparseHelpers.checkext({'csv'}), \
+        "csvfile",
+        action=argparseHelpers.checkext({'csv'}),
         help="The file path of the CSV file to shuffle.")
 
     argparser.add_argument(
-        "-n", \
-        "--noheader", \
-        action="store_true", \
-        help="The first row of the CSV will also be shuffled if this option is specified.")
+        "-r",
+        "--noheader",
+        action="store_true",
+        help="The first row of the CSV will be not be treated as a header if this option is specified.")
 
     argparser.add_argument(
-        "-o", \
-        "--overwrite", \
-        action="store_true", \
+        "-d",
+        "--destinationfolder",
+        action=argparseHelpers.checkvaliddir(),
+        help="Destination folder for output shuffled CSV file. " + \
+            "Has no effect if --inplace [-p] option is also specified.")
+
+    argparser.add_argument(
+        "-o",
+        "--overwrite",
+        action="store_true",
         help="The original CSV will be overwritten with the shuffled CSV." + \
         "This option may require running in Administrator mode.")
 
-    argparser.add_argument(
-        "-d", \
-        "--destinationfolder", \
-        action=argparseHelpers.checkvaliddir(), \
-        help="Destination folder for output shuffled CSV file. " + \
-            "Has no effect if --inplace [-p] option is also specified.")
     return argparser.parse_args()
 
 
-def set_ShuffleCSV_settings(args):
+def fill_settings(args):
     settings = ShuffleCSV.get_default_settings()
     settings['file'] = args.csvfile
     settings['no_header_row'] = args.noheader
@@ -52,7 +53,7 @@ def set_ShuffleCSV_settings(args):
 
 def main():
     args = parse_args()
-    settings = set_ShuffleCSV_settings(args)
+    settings = fill_settings(args)
     shuffler = ShuffleCSV(settings)
     shuffler.shuffle()
 

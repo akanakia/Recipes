@@ -14,18 +14,19 @@ class ShuffleCSV(object):
         return {
             'file': None,
             'no_header_row': False,
-            'overwrite': False,
-            'destination_folder': None}
+            'destination_folder': None,
+            'overwrite': False}
 
 
     def __init__(self, settings):
         self.settings = settings
-
+        if not self.settings['destination_folder']:
+            self.settings['destination_folder'] = os.path.split(self.settings['file'])[0]
 
     def shuffle(self):
         infile = self.settings['file']
         header_offset = 1 if self.settings['no_header_row'] else 2
-        num_rows = sum(1 for line in open(infile) if line.rstrip())
+        num_rows = sum(1 for line in open(infile) if line.rstrip()) # includes header row
         line_indices = range(header_offset, num_rows + 1)
         random.shuffle(line_indices)
 
@@ -46,13 +47,9 @@ class ShuffleCSV(object):
 
 
     def _get_out_filename(self):
-        infile = self.settings['file']
-
         if self.settings['overwrite']:
-            return infile + ".temp"
+            return self.settings['file'] + ".temp"
 
-        outfile_dir = os.path.split(infile)[0]
-        if self.settings['destination_folder']:
-            outfile_dir = self.settings['destination_folder']
-
-        return os.path.join(outfile_dir, 'shuffled-' + os.path.split(infile)[1])
+        return os.path.join(
+            self.settings['destination_folder'],
+            'shuffled-' + os.path.split(self.settings['file'])[1])
