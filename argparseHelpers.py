@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import argparse
-import os.path
+import os
 
 def checkext(choices):
     """
