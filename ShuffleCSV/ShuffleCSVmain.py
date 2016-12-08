@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import argparse
-import ArgparseHelper
+import argparseHelpers
 from ShuffleCSV import ShuffleCSV
 
 
@@ -9,7 +9,7 @@ def parse_args():
 
     argparser.add_argument(
         "csvfile", \
-        action=ArgparseHelper.checkext({'csv'}), \
+        action=argparseHelpers.checkext({'csv'}), \
         help="The file path of the CSV file to shuffle.")
 
     argparser.add_argument(
@@ -27,7 +27,7 @@ def parse_args():
     argparser.add_argument(
         "-d", \
         "--destinationfolder", \
-        action=ArgparseHelper.checkvaliddir(), \
+        action=argparseHelpers.checkvaliddir(), \
         help="Destination folder for output shuffled CSV file. " + \
             "Has no effect if --inplace [-p] option is also specified.")
     return argparser.parse_args()
