@@ -4,14 +4,23 @@ Created on Wed Dec 07 12:11:53 2016
 
 @author: Anshul Kanakia
 """
-
 from linecache import getline
 import random
 import os
 
 class ShuffleCSV(object):
+    @staticmethod
+    def get_default_settings():
+        return {
+            'file': None,
+            'no_header_row': False,
+            'overwrite': False,
+            'destination_folder': None}
+
+
     def __init__(self, settings):
         self.settings = settings
+
 
     def shuffle(self):
         infile = self.settings['file']
@@ -20,12 +29,7 @@ class ShuffleCSV(object):
         line_indices = range(header_offset, num_rows + 1)
         random.shuffle(line_indices)
 
-        outfile = 'shuffled-' + os.path.split(infile)[1]
-        if self.settings['destination_folder']:
-            outfile = os.path.join(self.settings['destination_folder'], outfile)
-        else:
-            outfile = os.path.join(os.path.split(infile)[0], outfile)
-
+        outfile = self._get_out_filename()
         outfp = open(outfile, 'w')
         if not self.settings['no_header_row']:
             outfp.write(getline(infile, 1))
@@ -34,10 +38,21 @@ class ShuffleCSV(object):
             outfp.write(getline(self.settings['file'], line_index))
         outfp.close()
 
-    @staticmethod
-    def get_default_settings():
-        return {
-            'file': "",
-            'no_header_row': False,
-            'shuffle_in_place': False,
-            'destination_folder': None}
+        if (self.settings['overwrite']):
+            os.remove(infile)
+            while (os.path.exists(infile)):
+                pass # wait until the file is actually deleted to prevent a race condition
+            os.rename(outfile, infile)
+
+
+    def _get_out_filename(self):
+        infile = self.settings['file']
+
+        if self.settings['overwrite']:
+            return infile + ".temp"
+
+        outfile_dir = os.path.split(infile)[0]
+        if self.settings['destination_folder']:
+            outfile_dir = self.settings['destination_folder']
+
+        return os.path.join(outfile_dir, 'shuffled-' + os.path.split(infile)[1])

@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+Created on Wed Dec 07 12:10:02 2016
+
+@author: Anshul Kanakia
+"""
 import argparse
 import argparseHelpers
 from ShuffleCSV import ShuffleCSV
@@ -19,10 +24,11 @@ def parse_args():
         help="The first row of the CSV will also be shuffled if this option is specified.")
 
     argparser.add_argument(
-        "-p", \
-        "--inplace", \
+        "-o", \
+        "--overwrite", \
         action="store_true", \
-        help="The original CSV will be overriden with the shuffled CSV.")
+        help="The original CSV will be overwritten with the shuffled CSV." + \
+        "This option may require running in Administrator mode.")
 
     argparser.add_argument(
         "-d", \
@@ -37,8 +43,8 @@ def set_ShuffleCSV_settings(args):
     settings = ShuffleCSV.get_default_settings()
     settings['file'] = args.csvfile
     settings['no_header_row'] = args.noheader
-    settings['shuffle_in_place'] = args.inplace
-    if ((not args.inplace) and args.destinationfolder):
+    settings['overwrite'] = args.overwrite
+    if ((not args.overwrite) and args.destinationfolder):
         settings['destination_folder'] = args.destinationfolder
 
     return settings
