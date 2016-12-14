@@ -26,8 +26,7 @@ def parse_args():
         "-d",
         "--destinationfolder",
         action=argparseHelpers.checkvaliddir(),
-        help="Destination folder for output shuffled CSV file. " + \
-            "Has no effect if --inplace [-p] option is also specified.")
+        help="Destination folder for output shuffled CSV file.")
 
     argparser.add_argument(
         "-s",
