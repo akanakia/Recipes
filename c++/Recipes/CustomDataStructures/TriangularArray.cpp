@@ -14,10 +14,10 @@ CustomDataStructures::TriangularArray<T>::~TriangularArray()
 }
 
 template<class T>
-T & CustomDataStructures::TriangularArray<T>::operator[] (
-    unsigned int d1, 
-    unsigned int d2)
+T at (unsigned int d1, unsigned int d2)
 {
     if (d1 < d2) return ((d1 * n) - (d1 * (d1 + 1) / 2)) + (d2 - d1) - 1;
     if (d1 > d2) return ((d2 * n) - (d2 * (d2 + 1) / 2)) + (d1 - d2) - 1;
+
+    return NULL;
 }

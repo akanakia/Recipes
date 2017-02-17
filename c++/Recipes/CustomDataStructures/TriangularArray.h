@@ -10,7 +10,7 @@ namespace CustomDataStructures
 
         ~TriangularArray();
 
-        T& operator[] (unsigned int d1, unsigned int d2);
+        T at (unsigned int d1, unsigned int d2);
 
     private:
         unsigned int n;

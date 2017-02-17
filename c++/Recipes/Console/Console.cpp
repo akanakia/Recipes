@@ -2,10 +2,15 @@
 //
 
 #include "stdafx.h"
+#include "CSVFileParser.h"
 
+void TestCSVFileReader(const std::string& filePath)
+{
+    CSVFileParser::ReadCSVFile(filePath);
+}
 
 int main(int argc, char *argv[])
 {
-    return 0;
+    std::string filePath = std::string(argv[1]);
+    TestCSVFileReader(filePath);
 }
-
